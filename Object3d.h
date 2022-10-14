@@ -227,7 +227,5 @@ private: // メンバ変数
 	XMMATRIX matWorld;
 	// 親オブジェクト
 	Object3d* parent = nullptr;
-	//キー取得
-	Input* input = nullptr;
 };
 
