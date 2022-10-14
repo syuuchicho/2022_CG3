@@ -81,6 +81,7 @@ void GameScene::Update()
 		position.x += 1.0f;
 		//座標の変更を反映
 		sprite1->SetPosition(position);
+
 	}
 
 	object3d->Update();
@@ -95,7 +96,7 @@ void GameScene::Draw()
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
-	spriteBG->Draw();
+	//spriteBG->Draw();
 
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
