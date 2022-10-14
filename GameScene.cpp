@@ -34,9 +34,9 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Sprite::LoadTexture(2, L"Resources/texture.png");
 
 	//座標{0,0}に,テクスチャ2番のスプライトを生成
-	sprite1 = Sprite::Create(2,{0, 0});
+	sprite1 = Sprite::Create(2, { 0, 0 });
 	//座標{500,500}に,テクスチャ2番のスプライトを生成
-	sprite2 = Sprite::Create(2,{500, 500}, { 1,0,0,1 }, { 0,0 }, false, true);
+	sprite2 = Sprite::Create(2, { 500, 500 }, { 1,0,0,1 }, { 0,0 }, false, true);
 
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
