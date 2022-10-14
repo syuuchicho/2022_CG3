@@ -2,9 +2,8 @@
 
 #include "DirectXCommon.h"
 #include <DirectXMath.h>
-#include "Input.h"
 #include "Sprite.h"
-#include "Object3d.h"
+#include "Object3d.h"//<-#include"input.h"
 #include "DebugText.h"
 
 /// <summary>
