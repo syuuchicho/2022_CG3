@@ -5,7 +5,7 @@
 #include <d3d12.h>
 #include <DirectXMath.h>
 #include <d3dx12.h>
-
+#include"Input.h"
 /// <summary>
 /// 3Dオブジェクト
 /// </summary>
@@ -194,7 +194,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void Update(Input* input);
 
 	/// <summary>
 	/// 描画
@@ -227,5 +227,7 @@ private: // メンバ変数
 	XMMATRIX matWorld;
 	// 親オブジェクト
 	Object3d* parent = nullptr;
+	//キー取得
+	Input* input = nullptr;
 };
 

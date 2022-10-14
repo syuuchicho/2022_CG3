@@ -23,7 +23,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 	this->dxCommon = dxCommon;
 	this->input = input;
-
+	
 	// デバッグテキスト用テクスチャ読み込み
 	Sprite::LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
 	// デバッグテキスト初期化
@@ -42,7 +42,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
 	object3d = Object3d::Create();
-	object3d->Update();
+	object3d->Update(input);
 }
 
 void GameScene::Update()
@@ -83,7 +83,7 @@ void GameScene::Update()
 		sprite1->SetPosition(position);
 	}
 
-	object3d->Update();
+	object3d->Update(input);
 }
 
 void GameScene::Draw()
