@@ -25,7 +25,7 @@ static const float2 uv_array[vnum] =
 	float2(0,0),//左上
 	float2(1,1),//右下
 	float2(1,0),//右上
-};
+};//
 
 //点の入力から,四角形を出力
 [maxvertexcount(vnum)]
