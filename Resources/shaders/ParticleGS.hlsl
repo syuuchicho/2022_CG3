@@ -13,10 +13,10 @@ static const uint vnum = 4;
 //センターからのオフセット
 static const float4 offset_array[vnum] =
 {
-	float4(-0.25f,-0.25f,0,0),//左下
-	float4(-0.25f,+0.25f,0,0),//左上
-	float4(+0.25f,-0.25f,0,0),//右下
-	float4(+0.25f,+0.25f,0,0),//右上
+	float4(-0.5f,-0.5f,0,0),//左下
+	float4(-0.5f,+0.5f,0,0),//左上
+	float4(+0.5f,-0.5f,0,0),//右下
+	float4(+0.5f,+0.5f,0,0),//右上
 };
 
 static const float2 uv_array[vnum] =
@@ -37,13 +37,11 @@ void main(
 	GSOutput element;
 	//4点分まわす
 	for (uint i = 0; i < vnum; i++) {
-		//中心からのオフセットをビルボード回転
-		float4 offset = mul(matBillboard, offset_array[i]);
 		//ワールド座標ベースで,ずらす
+		float4 offset = mul(matBillboard, offset_array[i]);
+		//ビュー,射影変換
 		element.svpos = input[0].pos+offset;
 		//element.uv = float2(0.5f, 0.5f);
-		//ビュープロジェクション変換
-		element.svpos = mul(mat, element.svpos);
 		element.uv = uv_array[i];
 		output.Append(element);
 	}
