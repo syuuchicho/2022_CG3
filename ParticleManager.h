@@ -56,7 +56,7 @@ public: // サブクラス
 		//現在フレーム
 		int frame = 0;
 		//終了フレーム
-		int num_frame = 0; 
+		int num_frame = 0;
 	};
 
 private: // 定数
@@ -235,5 +235,5 @@ private: // メンバ変数
 	//XMFLOAT3 scale = { 1,1,1 };
 	//パーティクル配列
 	std::forward_list<Particle>particles;
-};
 
+};
