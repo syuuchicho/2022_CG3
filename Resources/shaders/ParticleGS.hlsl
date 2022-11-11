@@ -42,7 +42,6 @@ void main(
 		//ƒrƒ…[,Ë‰e•ÏŠ·
 		element.svpos = input[0].pos+offset;
 		//element.uv = float2(0.5f, 0.5f);
-		element.svpos = mul(mat, element.svpos);
 		element.uv = uv_array[i];
 		output.Append(element);
 	}
