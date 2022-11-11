@@ -42,26 +42,37 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
 	particleMan = ParticleManager::Create();
+	
 	particleMan->Update(input);
+
+
 }
 
 void GameScene::Update()
 {
-	//// オブジェクト移動
-	//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-	//{
-	//	// 現在の座標を取得
-	//	XMFLOAT3 position = particleMan->GetPosition();
 
-	//	// 移動後の座標を計算
-	//	if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-	//	else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-	//	if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-	//	else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+	for (int i = 0; i < 100; i++)
+	{
+		//XYZ全て[-5.0f,+5.0f]でランダムに分布
+		const float rnd_pos = 10.0f;
+		XMFLOAT3 pos{};
+		pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		//XYZ全て[-0.05f,+0.05f]でランダムに分布
+		const float rnd_vel = 0.1f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		//重力に見立ててYのみ[-0.001f,0]でランダムに分布
+		XMFLOAT3 acc{};
+		const float rnd_acc = 0.001f;
+		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-	//	// 座標の変更を反映
-	//	particleMan->SetPosition(position);
-	//}
+		//追加
+		particleMan->Add(60, pos, vel, acc);
+	}
 
 	// カメラ移動
 	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A))

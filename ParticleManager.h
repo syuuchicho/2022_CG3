@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include"Input.h"
+#include<forward_list>
 /// <summary>
 /// 3Dオブジェクト
 /// </summary>
@@ -33,7 +34,6 @@ public: // サブクラス
 	{
 		XMFLOAT3 pos; // xyz座標
 	};
-
 	// 定数バッファ用データ構造体
 	struct ConstBufferData
 	{
@@ -41,13 +41,30 @@ public: // サブクラス
 		XMMATRIX matBillboard;	//ビルボード行列
 	};
 
+	//パーティクル1粒
+	struct Particle
+	{
+		//DirectX::を省略
+		using XMFLOAT3 = DirectX::XMFLOAT3;
+
+		//座標
+		XMFLOAT3 position = {};
+		//速度
+		XMFLOAT3 velocity = {};
+		//加速度
+		XMFLOAT3 accel = {};
+		//現在フレーム
+		int frame = 0;
+		//終了フレーム
+		int num_frame = 0; 
+	};
+
 private: // 定数
 	static const int division = 50;					// 分割数
 	static const float radius;				// 底面の半径
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int vertexCount = 30;		// 頂点数
-	//static const int vertexCount = 1;		// 頂点数
+	static const int vertexCount = 1024;		// 頂点数
 
 public: // 静的メンバ関数
 	/// <summary>
@@ -204,10 +221,19 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw();
-
+	/// <summary>
+	/// パーティクルの追加
+	/// </summary>
+	/// <param name="life">生存時間</param>
+	/// <param name="position">初期座標</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="accel">加速度</param>
+	void Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel);
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 	// ローカルスケール
 	//XMFLOAT3 scale = { 1,1,1 };
+	//パーティクル配列
+	std::forward_list<Particle>particles;
 };
 
