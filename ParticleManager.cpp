@@ -271,7 +271,13 @@ void ParticleManager::InitializeGraphicsPipeline()
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
+		{//スケール
+			"TEXCOORD",0,DXGI_FORMAT_R32_FLOAT,0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
 	};
+
 
 	// グラフィックスパイプラインの流れを設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
@@ -579,8 +585,8 @@ void ParticleManager::Update(Input* input)
 	);
 
 	//全パーティクル更新
-	for (std::forward_list<Particle>::iterator it =particles.begin();
-		it!=particles.end();
+	for (std::forward_list<Particle>::iterator it = particles.begin();
+		it != particles.end();
 		it++)
 	{
 		//経過フレーム数をカウント
@@ -590,18 +596,25 @@ void ParticleManager::Update(Input* input)
 		//速度による移動
 		it->position = it->position + it->velocity;
 
+		//進行度を0~1の範囲に換算
+		float f = (float)it->frame / it->num_frame;
+		//スケールの線形補間
+		it->scale = (it->e_scale - it->s_scale) * f;
+		it->scale += it->s_scale;
 	}
 	//頂点バッファへデータ転送
 	VertexPos* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	if (SUCCEEDED(result)){
+	if (SUCCEEDED(result)) {
 		//パーティクル情報を1つずつ反映
-		for (std::forward_list<Particle>::iterator it=particles.begin();
-			it !=particles.end(); 
+		for (std::forward_list<Particle>::iterator it = particles.begin();
+			it != particles.end();
 			it++)
 		{
 			//座標
 			vertMap->pos = it->position;
+			//スケール
+			vertMap->scale = it->scale;
 			//次の頂点へ
 			vertMap++;
 		}
@@ -612,7 +625,7 @@ void ParticleManager::Update(Input* input)
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat =  matView * matProjection;	// 行列の合成
+	constMap->mat = matView * matProjection;	// 行列の合成
 	constMap->matBillboard = matBillboard;
 	constBuff->Unmap(0, nullptr);
 }
@@ -635,10 +648,10 @@ void ParticleManager::Draw()
 	// シェーダリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
 	// 描画コマンド
-	cmdList->DrawInstanced((UINT)std::distance(particles.begin(),particles.end()), 1, 0, 0);
+	cmdList->DrawInstanced((UINT)std::distance(particles.begin(), particles.end()), 1, 0, 0);
 }
 
-void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel)
+void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float end_scale)
 {
 	//リストに要素を追加
 	particles.emplace_front();
